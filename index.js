@@ -175,6 +175,38 @@ async function run() {
         }
       });
 
+  
+
+  
+  
+  
+      // save enrolled course in database
+      app.post("/enroll", async (req, res) => {
+        const { userEmail, courseId } = req.body;
+  
+        try {
+          const user = await userCollection.findOne({ email: userEmail });
+          if (!user) return res.status(404).send({ success: false, message: "User not found" });
+  
+          const alreadyEnrolled = await enrollmentCollection.findOne({
+            userId: user._id,
+            courseId: courseId
+          });
+          if (alreadyEnrolled) return res.send({ success: false, message: "Already enrolled" });
+  
+          const result = await enrollmentCollection.insertOne({
+            userId: user._id,
+            courseId: courseId,
+            enrolledAt: new Date()
+          });
+  
+          res.send({ success: true, message: "Course enrolled successfully", result });
+  
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ success: false, message: "Enrollment failed", error });
+        }
+      });
 
 
 
