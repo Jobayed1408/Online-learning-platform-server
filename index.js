@@ -64,6 +64,23 @@ async function run() {
       }
     });
 
+    
+  
+      // search data
+      app.get("/search", async (req, res) => {
+        try {
+          const searchTxt = req.query.text;
+          const result = await courseCollection
+            .find({
+              title: { $regex: searchTxt, $options: "i" }
+            })
+            .toArray();
+          res.send(result);
+        } catch (error) {
+          res.status(500).send({ message: "Error searching courses", error });
+        }
+      });
+
 
 
 
