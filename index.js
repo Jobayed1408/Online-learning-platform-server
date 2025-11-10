@@ -154,6 +154,26 @@ async function run() {
           res.status(500).send({ success: false, error: err.message });
         }
       });
+        
+  
+      // add single user 
+      app.post("/users", async (req, res) => {
+        try {
+          const user = req.body;
+  
+          const existingUser = await userCollection.findOne({ email: user.email });
+  
+          if (existingUser) {
+            return res.send({ success: true, message: "User already exists" });
+          }
+  
+          const result = await userCollection.insertOne(user);
+          res.send({ success: true, message: "User saved successfully", result });
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ success: false, message: "Error saving user" });
+        }
+      });
 
 
 
