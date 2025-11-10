@@ -96,6 +96,22 @@ async function run() {
           res.status(500).send({ message: "Error searching courses", error });
         }
       });
+      
+  
+  
+      // find specific id
+      app.get("/courses/:id", async (req, res) => {
+        try {
+          const id = req.params.id
+          // console.log(id);
+  
+          const result = await courseCollection.findOne({ _id: new ObjectId(id) })
+          res.send({ success: true, result });
+        } catch (error) {
+          res.status(500).send({ message: "Error searching courses", error });
+        }
+      });
+  
 
 
 
