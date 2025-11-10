@@ -81,6 +81,21 @@ async function run() {
         }
       });
 
+  
+  
+      // Delete data by id
+      app.delete("/course/:id", async (req, res) => {
+        try {
+          const { id } = req.params
+  
+          const result = await courseCollection
+            .deleteOne({ _id: new ObjectId(id) })
+  
+          res.send(result);
+        } catch (error) {
+          res.status(500).send({ message: "Error searching courses", error });
+        }
+      });
 
 
 
