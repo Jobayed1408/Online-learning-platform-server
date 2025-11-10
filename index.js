@@ -207,7 +207,31 @@ async function run() {
           res.status(500).send({ success: false, message: "Enrollment failed", error });
         }
       });
-
+  
+  
+  
+      // update single course
+      app.put("/update-course/:id", async (req, res) => {
+        const id = req.params.id;
+        const updatedData = req.body;
+        const userEmail = updatedData.email;
+  
+        try {
+          const result = await courseCollection.updateOne(
+            { _id: new ObjectId(id), created_by: userEmail },
+            { $set: updatedData }
+          );
+  
+          if (result.modifiedCount > 0) {
+            res.send({ success: true, message: "Course updated successfully" });
+          } else {
+            res.send({ success: false, message: "No course found to update" });
+          }
+        } catch (error) {
+          console.error("Update error:", error);
+          res.status(500).send({ success: false, message: "Server error" });
+        }
+      });
 
 
     await client.db("admin").command({ ping: 1 });
