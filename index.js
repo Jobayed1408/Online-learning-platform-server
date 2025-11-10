@@ -112,6 +112,33 @@ async function run() {
         }
       });
   
+  
+  
+      // get enrolled data from database
+      app.get("/enroll-courses", async (req, res) => {
+        try {
+          const { email } = req.query;
+          if (!email) {
+            return res.status(400).send({ success: false, message: "Email required" });
+          }
+  
+          const user = await userCollection.findOne({ email });
+          if (!user) {
+            return res.status(404).send({ success: false, message: "User not found" });
+          }
+  
+          const enrollments = await enrollmentCollection.find({ userId: user._id }).toArray();
+  
+          const courseIds = enrollments.map((e) => new ObjectId(e.courseId));
+  
+          const courses = await courseCollection.find({ _id: { $in: courseIds } }).toArray();
+  
+          res.send({ success: true, courses, courseIds });
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({ success: false, message: "Error fetching courses", error });
+        }
+      });
 
 
 
