@@ -139,6 +139,21 @@ async function run() {
           res.status(500).send({ success: false, message: "Error fetching courses", error });
         }
       });
+      
+  
+  
+  
+      // save courses data on courseCollection
+      app.post("/courses", async (req, res) => {
+        try {
+          const data = req.body;
+          const result = await courseCollection.insertOne(data);
+          res.send({ success: true, insertedId: result.insertedId });
+        } catch (err) {
+          console.error(err);
+          res.status(500).send({ success: false, error: err.message });
+        }
+      });
 
 
 
