@@ -8,7 +8,6 @@ The server-side of **SkillHub**, a full-stack online learning platform, built wi
 
 - **User Authentication**  
   - Firebase Authentication (Email/Password & Google)  
-  - JWT-based protected routes for secure access  
 
 - **Course Management (CRUD)**  
   - Create, Read, Update, Delete courses  
